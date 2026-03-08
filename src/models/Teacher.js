@@ -20,11 +20,10 @@ const teacherSchema = new mongoose.Schema({
   timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
 });
 
-// 비밀번호 해시
-teacherSchema.pre('save', async function (next) {
-  if (!this.isModified('passwordHash')) return next();
+// 비밀번호 해시 (Mongoose 9+ async 미들웨어)
+teacherSchema.pre('save', async function () {
+  if (!this.isModified('passwordHash')) return;
   this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
-  next();
 });
 
 teacherSchema.methods.verifyPassword = function (plain) {
