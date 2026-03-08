@@ -62,6 +62,9 @@ const morganStream = {
 
 // ── 모든 미들웨어 적용 함수 ───────────────────────────
 function applyMiddleware(app) {
+  // 0. 프록시 신뢰 설정 (Railway/Heroku 등 리버스 프록시 환경 필수)
+  app.set('trust proxy', 1);
+
   // 1. 보안 헤더
   app.use(helmet({
     contentSecurityPolicy: config.isDev ? false : undefined,
