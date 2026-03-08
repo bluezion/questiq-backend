@@ -102,7 +102,12 @@ async function classifyQuestion({ question, grade = '기타', subject = '일반'
     // ── 폴백: 경량 모델로 재시도 ──────────────────────
     if (err.status !== 400 && config.openai.model !== config.openai.fallbackModel) {
       logger.warn('폴백 모델로 재시도', { requestId, fallbackModel: config.openai.fallbackModel });
-      return classifyWithFallback({ question, grade, subject, requestId });
+      try {
+        return await classifyWithFallback({ question, grade, subject, requestId });
+      } catch (fallbackErr) {
+        logger.error('폴백 모델도 실패', { requestId, error: fallbackErr.message });
+        throw buildApiError(fallbackErr);
+      }
     }
 
     throw buildApiError(err);
