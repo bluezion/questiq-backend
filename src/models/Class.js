@@ -21,7 +21,7 @@ const classSchema = new mongoose.Schema({
   // 학생 진단 링크 공유 코드 (UUID prefix 6자 → 가독성 있는 8자리 코드)
   shareCode:   {
     type: String,
-    unique: true,
+    // unique: true 제거 → 아래 classSchema.index({ shareCode: 1 }, { unique: true })로 통일
     default: () => crypto.randomBytes(4).toString('hex').toUpperCase(), // 예: A3F1C9B2
   },
 

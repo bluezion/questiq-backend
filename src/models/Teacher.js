@@ -38,6 +38,7 @@ teacherSchema.methods.toPublic = function () {
   return obj;
 };
 
-teacherSchema.index({ email: 1 });
+// email: unique: true 로 이미 인덱스 선언됨 → 중복 제거
+// teacherSchema.index({ email: 1 }); ← 제거
 
 module.exports = mongoose.model('Teacher', teacherSchema);
